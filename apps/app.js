@@ -3,7 +3,15 @@ function resetForm() {
 	$('#query').val('');
 }
 
+function checkInput() {
+	var userSearch = $("#query").val();
+	if (userSearch == "") {
+		alert("Please type a search term");
+	}
+}
+
 $(document).ready(function () { 
+	//function to 
 	function getResults(query) {
 		$.getJSON("https://www.googleapis.com/youtube/v3/search",
 			{
@@ -22,8 +30,8 @@ $(document).ready(function () {
 		var html = "";
 		$.each(videos, function (index, video) {
 			console.log(video.snippet.thumbnails.medium.url);
-			html = html + "<li><p>" + video.snippet.title +
-				"</p><a href='http://youtube.com'><img src='" +  video.snippet.thumbnails.high.url + "'/></a></li>" ;
+			console.log('http://youtube.com/watch?v=' + video.id.videoId);
+			html = html + "<p>" + video.snippet.title + "</p><a href='http://youtube.com/watch?v=" + video.id.videoId + "' target='_blank'><img src='" + video.snippet.thumbnails.high.url + "'/></a>";
 
 		});
 		$("#search-results").html(html);
@@ -31,6 +39,7 @@ $(document).ready(function () {
 
 	$("#search-term").submit(function (event) {
 		event.preventDefault();
+		checkInput();
 		getResults($("#query").val());
 		resetForm();
 	});
